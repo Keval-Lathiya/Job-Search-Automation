@@ -23,40 +23,6 @@
 # 
 # 
 
-# In[1]:
-
-
-from jobspy import scrape_jobs
-from twilio.rest import Client
-
-def generate_result(search_term="Data Analyst at Meta"):
-    jobs = scrape_jobs(
-        site_name=["LinkedIn"], # or Indeed, zip_recruiter, glassdoor. You can put all of them as well
-        search_term=search_term,
-        hours_old=24
-        #location="Remote",
-        #num_jobs=20,
-        #linkedin_fetch_description=True,
-        #include_salary=True,
-        #experience_level="Mid Level",
-        #job_type="Full-time",
-        #remote=True
-    )
-    
-    jobs = jobs[jobs['company'] == 'Meta'] # Adding additional filter just in case other promoted jobs are fetched too
-    # add more filters as well like specific words in job description (i.e security clearance ), minimum salary, company industry etc
-    
-    if not jobs.empty:
-        message = f"Here are the latest {search_term} jobs :\n\n"
-        for index, job in jobs.iterrows():
-            message += f"{job['title']}\nLink: {job['job_url']}\n\n"
-    else:
-        message = "No new jobs found."
-    return message
-
-
-# In[2]:
-
 
 from jobspy import scrape_jobs
 from twilio.rest import Client
@@ -87,8 +53,6 @@ def generate_result(search_term="Data Analyst at Meta"):
     return message
 
 
-# In[3]:
-
 
 # I have used Twilio to send messages to my whatsapp. It also provides services to send messages in SMS. It's very inexpensive but 
 # if you prefer something free and in email, smtplib is an excellent library to use. Just make sure you're using app password if you have 2FA
@@ -109,8 +73,6 @@ def send_whatsapp_message(result):
     print(f"Message sent with SID: {message.sid}")
 
 
-# In[ ]:
-
 
 def main():
     # Generate the result
@@ -119,8 +81,6 @@ def main():
     # Send the result via WhatsApp
     send_whatsapp_message(result)
 
-
-# In[ ]:
 
 
 if __name__ == "__main__":
